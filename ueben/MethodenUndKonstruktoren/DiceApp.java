@@ -1,5 +1,6 @@
 package MethodenUndKonstruktoren;
 
+
 public class DiceApp {
     public static void main(String[] args) {
         //Declaration and initialization of variables/objects
