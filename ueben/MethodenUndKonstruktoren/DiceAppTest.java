@@ -3,7 +3,7 @@ package MethodenUndKonstruktoren;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DiceTest {
+public class DiceAppTest {
 
     @Test
     void throwDice_shouldReturnBetween1And6() {
