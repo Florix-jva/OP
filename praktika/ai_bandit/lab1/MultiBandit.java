@@ -29,15 +29,6 @@ public class MultiBandit {
         return this.bandits.length;
     }
 
-    public double getPricePerRound(){
-        double overallPrice = 0;
-
-        for (Bandit bandit : bandits) {
-            overallPrice += bandit.getPricePerRound();
-        }
-        return overallPrice/getRoundsPlayed();
-    }
-
     public double getOverallProfit(){
         double overallProfit = 0;
 
@@ -57,6 +48,7 @@ public class MultiBandit {
     }
 
     public int getRoundsPlayed(){
+
         return bandits[0].getRoundsPlayed();
     }
 
@@ -67,5 +59,14 @@ public class MultiBandit {
             overallProfit += bandit.play();
         }
         return overallProfit;
+    }
+
+    public double getPricePerRound(){
+//        double overallPrice = 0;
+//
+//        for (Bandit bandit : bandits) {
+//            overallPrice += bandit.getPricePerRound();
+//        }
+        return bandits[0].getPricePerRound();
     }
 }
