@@ -40,7 +40,7 @@ public class MultiBandit {
         if(getRoundsPlayed() == 0)                   //If no round is played yet => no profit
             return 0;
 
-        return overallProfit / getRoundsPlayed();
+        return 1 - overallProfit / getRoundsPlayed();
     }
 
     public int getRoundsPlayed(){
