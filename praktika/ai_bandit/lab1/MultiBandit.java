@@ -1,7 +1,5 @@
 package ai_bandit.lab1;
 
-import java.util.Random;
-
 public class MultiBandit {
     private final Bandit[] bandits;
 
@@ -39,25 +37,27 @@ public class MultiBandit {
     }
 
     public double getMeanProfitPerRound(){
-        double sumMean = 0;
+        if(getRoundsPlayed() == 0)                   //If no round is played yet => no profit
+            return 0;
 
-        for (Bandit bandit : bandits) {
-            sumMean += bandit.getMeanProfitPerRound();
-        }
-        return sumMean;
+        return overallProfit / getRoundsPlayed();
     }
 
     public int getRoundsPlayed(){
-
-        return bandits[0].getRoundsPlayed();
-    }
-
-    public double play(int banditIndex){
-        double overallProfit = 0;
+        int overallRoundsPlayed = 0;
 
         for (Bandit bandit : bandits) {
-            overallProfit += bandit.play();
+            overallRoundsPlayed += bandit.getRoundsPlayed();
         }
+        return overallRoundsPlayed;
+    }
+
+    private double overallProfit = 0;
+
+    public double play(int banditIndex){
+
+        overallProfit += bandits[banditIndex].play();
+
         return overallProfit;
     }
 
