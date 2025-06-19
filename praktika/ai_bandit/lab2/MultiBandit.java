@@ -1,8 +1,7 @@
-package ai_bandit.lab1;
+package ai_bandit.lab2;
 
 public class MultiBandit {
     private Bandit[] bandits;
-
 
     public MultiBandit(int numberBandits) {
         bandits = new Bandit[numberBandits];

@@ -1,4 +1,5 @@
-package ai_bandit.lab1;
+
+import ai_bandit.lab1.MultiBandit;
 
 import java.util.Scanner;
 
@@ -18,14 +19,16 @@ public class MultiBanditApp {
 
             int numberOfRounds = scan.nextInt();
 
-            System.out.printf("\n%-5s | %-6s | %-10s | %-10s\n", "Round", "Bandit", "Win [€]", "Net [€]");
+
+
+            System.out.printf("\n%5s | %6s | %10s | %10s\n", "Round", "Bandit", "Win [€]", "Net [€]");
 
             for (int i = 0; i < numberOfRounds; i++){
                 randomBanditIndex = (int)(numberBandits * Math.random());
-
-                System.out.printf("%-5d | %-6d | %-10.2f | %-10.2f\n", i + 1,randomBanditIndex + 1, multiBandit.play(randomBanditIndex), multiBandit.getOverallProfit());
+                System.out.printf("%5d | %6d | %10.2f | %10.2f\n", i + 1,randomBanditIndex + 1, multiBandit.play(randomBanditIndex), multiBandit.getOverallProfit());
             }
 
-            System.out.printf("\nstatistics: \nRounds: %d\nProfit: %.2f", multiBandit.getRoundsPlayed(), -multiBandit.getOverallProfit());
+
+            System.out.printf("\nMulti-armed bandit's statistics: \nRounds: %d\nProfit: %.2f", multiBandit.getRoundsPlayed(), -multiBandit.getOverallProfit());
         }
 }

@@ -1,7 +1,6 @@
 package ai_bandit.lab1;
 
 import java.util.Random;
-import java.util.random.RandomGenerator;
 
 public class Bandit {
     //variables
@@ -55,8 +54,9 @@ public class Bandit {
    return: profit of the round
     */
     public double play(){
-        double profit = (Math.ceil(determineWin() * 10)/10);
-        if (profit <= 0){
+        double profit = (double) Math.round(determineWin() * 10) / 10;
+
+        if (profit < 0){
             profit = 0;
         }
         overallProfit += pricePerRound - profit;
