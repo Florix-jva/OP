@@ -9,7 +9,7 @@ public class MultiBanditApp {
             Scanner scan = new Scanner(System.in);
             int numberBandits = 7;
             int banditIndex = 0;
-
+            double win;
 
             MultiBandit multiBandit = new MultiBandit(numberBandits);
             MultiBanditSolver multiBanditSolver = new MultiBanditSolver(multiBandit);
@@ -26,6 +26,11 @@ public class MultiBanditApp {
 
             System.out.printf("\n%5s | %6s | %10s | %10s\n", "Round", "Bandit", "Win [€]", "Net [€]");
 
+            for (int i = 0; i < multiBandit.getNumberBandits(); i++) {
+                win = multiBandit.play(i);
+                multiBanditSolver.addBanditResponse(i, win);
+            }
+
             for (int i = 0; i < numberOfRounds; i++){
                 if(strategy < 0 || strategy > 100) {
                     banditIndex = multiBanditSolver.chooseRandom();
@@ -34,10 +39,13 @@ public class MultiBanditApp {
                     multiBanditSolver.setGreedyEpsilon((double)strategy/100);
                     banditIndex = multiBanditSolver.chooseGreedy();
                 }
+                win = multiBandit.play(banditIndex);
 
-                System.out.printf("%5d | %6d | %10.2f | %10.2f\n", i + 1,banditIndex + 1, multiBandit.play(banditIndex), multiBandit.getOverallProfit());
+                multiBanditSolver.addBanditResponse(banditIndex,win - multiBandit.getPricePerRound());
+
+                System.out.printf("%5d | %6d | %10.2f | %10.2f\n", i + 1,banditIndex + 1, win, multiBandit.getOverallProfit());
             }
-            if(banditIndex < 0 || banditIndex > 100)
+            if(strategy < 0 || strategy > 100)
                 System.out.println("Applied strategy: random\n");
             else
                 System.out.printf("Applied strategy: epsilon-greedy (epsilon = %.2f)\n",(double)strategy/100);

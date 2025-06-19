@@ -46,15 +46,23 @@ public class MultiBanditSolver {
     public int chooseGreedy() {
         double randomNumber = random.nextDouble(0,1);
 
+        // first checking all
+        for (int i = 0; i < bandits.getNumberBandits(); i++) {
+            if (counts[i] == 0) {
+                return i;
+            }
+        }
         if (randomNumber > epsilon) {   // the bandit wth the maximum win will be chosen
-            double maxWin = 0;
             int maxWinBanditIndex = 0;
-            for(maxWinBanditIndex = 0; maxWinBanditIndex < (wins.length - 1); maxWinBanditIndex++) {
-                if (maxWin < wins[maxWinBanditIndex])
-                    maxWin = wins[maxWinBanditIndex];
+            for(int i = 0; i < bandits.getNumberBandits(); i++) {
+                if (getAverageWin(i) > getAverageWin(maxWinBanditIndex)){
+                    maxWinBanditIndex = i;
+                }
             }
             return maxWinBanditIndex;
         }
-        return chooseRandom();          // otherwise a random bandit will be chosen
+        else {
+            return chooseRandom();          // otherwise a random bandit will be chosen
+        }
     }
 }
