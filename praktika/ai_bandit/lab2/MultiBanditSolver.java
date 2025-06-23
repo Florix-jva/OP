@@ -36,6 +36,10 @@ public class MultiBanditSolver {
         return wins[banditIndex]/counts[banditIndex];
     }
 
+    public int[] getCounts() {
+        return counts;
+    }
+
     public int chooseRandom() {
         return random.nextInt(0,bandits.getNumberBandits());    // random bandit of all bandits
     }

@@ -1,7 +1,5 @@
 package ai_bandit.lab2;
 
-import ai_bandit.lab1.Bandit;
-
 import java.util.Scanner;
 
 public class BanditApp {
@@ -9,7 +7,7 @@ public class BanditApp {
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
-        ai_bandit.lab1.Bandit bandit = new Bandit("Bandimat",1.0,0.8,0.5);
+        Bandit bandit = new Bandit("Bandimat",1.0,0.8,0.5);
 
         System.out.printf("Gambling: %s \nPrice\t: %.2f\n",bandit.getName(), bandit.getPricePerRound());
         System.out.println("How many rounds would you like to play?");
