@@ -1,7 +1,7 @@
 /*
  * Author: Florian Schnoor, Robert Petker
  * Project: 3. Lab in OP
- * Version: 18/06/2025
+ * Version: 23/06/2025
  */
 package ai_bandit.lab2;
 
@@ -50,12 +50,12 @@ public class MultiBanditSolver {
     public int chooseGreedy() {
         double randomNumber = random.nextDouble(0,1);
 
-        // first checking all
-        for (int i = 0; i < bandits.getNumberBandits(); i++) {
-            if (counts[i] == 0) {
-                return i;
-            }
-        }
+//        // first checking all
+//        for (int i = 0; i < bandits.getNumberBandits(); i++) {
+//            if (counts[i] == 0) {
+//                return i;
+//            }
+//        }
         if (randomNumber > epsilon) {   // the bandit wth the maximum win will be chosen
             int maxWinBanditIndex = 0;
             for(int i = 0; i < bandits.getNumberBandits(); i++) {

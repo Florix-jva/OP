@@ -1,3 +1,8 @@
+/*
+ * Author: Florian Schnoor, Robert Petker
+ * Project: 3. Lab in OP
+ * Version: 23/06/2025
+ */
 package ai_bandit.lab2;
 
 import java.util.Scanner;
@@ -23,13 +28,7 @@ public class MultiBanditApp {
 
             int strategy = scan.nextInt();
 
-
             System.out.printf("\n%5s | %6s | %10s | %10s\n", "Round", "Bandit", "Win [€]", "Net [€]");
-
-            for (int i = 0; i < multiBandit.getNumberBandits(); i++) {
-                win = multiBandit.play(i);
-                multiBanditSolver.addBanditResponse(i, win);
-            }
 
             for (int i = 0; i < numberOfRounds; i++){
                 if(strategy < 0 || strategy > 100) {
