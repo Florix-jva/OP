@@ -20,11 +20,10 @@ public class WheelOfFortune extends Gambling{
     public WheelOfFortune(String name, double pricePerRound, int[] categoryNumberFields, double[] categoryWins) {
         super(name, pricePerRound);
         this.categoryWins = categoryWins;
-        for (int categoryNumberField : categoryNumberFields) {
-            this.numberFields += categoryNumberField;
-        }
-        this.categoryChances = new double[categoryNumberFields.length];
-        for (int i = 0; i < categoryNumberFields.length; i++) {
+        this.numberFields = categoryNumberFields.length;
+
+        this.categoryChances = new double[numberFields];
+        for (int i = 0; i < numberFields; i++) {
             categoryChances[i] = categoryNumberFields[i] / (double) numberFields;
         }
     }

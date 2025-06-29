@@ -5,74 +5,149 @@ import ai_bandit.lab2.MultiBanditSolver;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class GUI extends JPanel{
+public class GUI extends JPanel implements ActionListener {
     //buttons
     JButton btnReset = new JButton("Reset bandits");
     JButton btn1x = new JButton("Play 1x");
     JButton btn10x = new JButton("Play 10x");
     JButton btn100x = new JButton("Play 100x");
-    JButton btnStart = new JButton("Start");
     JMenuItem itemRndm = new JMenuItem("Random bandit");
     JMenuItem itemEpsilon = new JMenuItem("Epsilon-Greedy");
 
-    private String strategy;
+    private final GUIApp app;
+    private final GUIBanditPanel guiBanditPanel;
+    private final GUICreditPanel guiCreditPanel;
+    private int numberOfRounds = 1;
+    private int strategy;
+    private JLabel strategyLabel;
 
-    public GUI (MultiBanditSolver solver, MultiBandit bandits) {
-        this.solver = solver;
+    public int getNumberOfRounds() {
+        return numberOfRounds;
+    }
+
+    public int getStrategy() {
+        return strategy;
+    }
+    JFrame frame = new JFrame("BanditStrategies");
+
+    public GUI (MultiBanditSolver solver, GUIApp guiApp) {
+        this.app = guiApp;
+        this.guiBanditPanel = new GUIBanditPanel(app);
+        this.guiCreditPanel = new GUICreditPanel(app);
+
         // frame
-        JFrame frame = new JFrame("BanditStrategies");
         setSize(800,500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(getSize());
         frame.setLocationByPlatform(true);
 
-        // menu
+        // menu for choosing strategy
         JMenuBar menuBar = new JMenuBar();
         JMenu menuStrategy = new JMenu("strategy");
         frame.setJMenuBar(menuBar);
         menuBar.add(menuStrategy);
         menuStrategy.add(itemRndm);
         menuStrategy.add(itemEpsilon);
+        itemRndm.setActionCommand("RNDM");
+        itemRndm.addActionListener(this);
+        itemEpsilon.setActionCommand("EPSILON");
+        itemEpsilon.addActionListener(this);
 
-        JLabel strategyLabel = new JLabel("strategy: " + strategy);
+        // display current strategy
+        strategyLabel = new JLabel();
         strategyLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        updateStrategyLabel();
 
-        // panel
+        // buttons
         JPanel panelBtns = new JPanel();
         panelBtns.setLayout(new BoxLayout(panelBtns, BoxLayout.Y_AXIS));
         panelBtns.setPreferredSize(new Dimension(120, 400));
-        btnStart.setMaximumSize(new Dimension(120,30));
         btnReset.setMaximumSize(new Dimension(120,30));
         btn1x.setMaximumSize(new Dimension(120,30));
         btn10x.setMaximumSize(new Dimension(120,30));
         btn100x.setMaximumSize(new Dimension(120,30));
 
+        // event handling
+        btnReset.setActionCommand("RESET");
+        btnReset.addActionListener(this);
+        btn1x.setActionCommand("1x");
+        btn1x.addActionListener(this);
+        btn10x.setActionCommand("10x");
+        btn10x.addActionListener(this);
+        btn100x.setActionCommand("100x");
+        btn100x.addActionListener(this);
+
         panelBtns.add(btnReset);
         panelBtns.add(btn1x);
         panelBtns.add(btn10x);
         panelBtns.add(btn100x);
-        panelBtns.add(btnStart);
+
+        frame.setVisible(true);
 
         // Graphs
-        GUIBanditPanel guiBanditPanel = new GUIBanditPanel(solver);
-
         JPanel panelGraphs = new JPanel(new GridLayout(2, 1));
         panelGraphs.add(guiBanditPanel);
-        panelGraphs.add(new GUICreditPanel(bandits));
+        panelGraphs.add(guiCreditPanel);
 
         // Content
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new BorderLayout());
+
         contentPane.add(panelGraphs, BorderLayout.CENTER);
         contentPane.add(panelBtns, BorderLayout.WEST);
         contentPane.add(strategyLabel, BorderLayout.NORTH);
 
-        frame.setVisible(true);
+    }
+    public GUIBanditPanel getBanditPanel() {
+        return guiBanditPanel;
     }
 
-    private MultiBanditSolver solver;
+    public GUICreditPanel getCreditPanel() {
+        return guiCreditPanel;
+    }
+    private void updateStrategyLabel() {
+        if(strategy < 0 || strategy > 100) {
+            strategyLabel.setText("strategy: random");
+        } else {
+            strategyLabel.setText("strategy: epsilon-greedy");
+        }
+    }
 
-    private MultiBandit bandits;
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()){
+            case "RESET":
+                app.reset();
+                break;
+            case "1x":
+                numberOfRounds = 1;
+                app.runRounds();
+                break;
+            case "10x":
+                numberOfRounds = 10;
+                app.runRounds();
+                break;
+            case "100x":
+                numberOfRounds = 100;
+                app.runRounds();
+                break;
+            case "EPSILON":
+                this.strategy = 15;;
+                updateStrategyLabel();
+
+                break;
+            case "RNDM":
+                this.strategy = -1;
+                updateStrategyLabel();
+
+                break;
+            default:
+                numberOfRounds = 0;
+                break;
+        }
+    }
 
 }
