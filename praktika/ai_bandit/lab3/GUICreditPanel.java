@@ -1,11 +1,10 @@
 package ai_bandit.lab3;
 
-import ai_bandit.lab2.MultiBandit;
-import ai_bandit.lab2.MultiBanditSolver;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.List;
 
 public class GUICreditPanel extends JPanel {
 
@@ -18,32 +17,34 @@ public class GUICreditPanel extends JPanel {
         int h = getHeight();
         int xAxis = (int)(h/1.8);
         int yAxis = (int)(w/100);
+        // new colours
+        Color niceGreen = new Color(36, 186, 36);
+        Color niceRed   = new Color(140, 35, 35);
 
-
+        // coordinates system
         g.drawString("Number of rounds",(int)(w/1.3),(int)(xAxis*1.1));
         g.drawLine(yAxis,xAxis,(int)(w/1.1),xAxis);                             // x-axis
         g.drawLine(yAxis,(int)(h/1.1),w/100,h/10);                     // y-axis
 
+        // data for plotting
+//        double[] credit = app.getOverallProfit();
+        List<Double> credit = app.getOverallProfit();
 
-        // plot
-        Color niceGreen = new Color(36, 186, 36);
-        Color niceRed   = new Color(140, 35, 35);
-        
-        double[] credit = app.getOverallProfit();
-
-        int validLength = app.getRoundsPlayed();
-
-        if (credit == null || validLength == 0) {
+        int roundsPlayed = app.getRoundsPlayed();
+        // check if data is already valid
+        if (credit == null || roundsPlayed == 0) {
             g.drawString("No data yet", w / 2, h / 2);
             return;
         }
 
-        double maxHeight = credit[credit.length - 1];
+        // determine max plotting height
+//        double maxHeight = credit[credit.length - 1];
+        double maxHeight = credit.get(credit.size() - 1);
 
-        for (int i = 0; i <= credit.length-1; i++) {
-            double angle = i * 2 * Math.PI / w;
-            double sinVal = Math.sin(angle);
-
+        // creating plot
+//        for (int i = 0; i <= credit.length-1; i++) {
+        for (int i = 0; i <= credit.size()-1; i++) {
+            // finding the max credit value
             for (double val : credit) {
                 double absVal = Math.abs(val);
                 if (absVal > maxHeight) {
@@ -51,16 +52,21 @@ public class GUICreditPanel extends JPanel {
                 }
             }
 
-            int x = (int)(((((0.75*w)/credit.length) * i)) + yAxis);       // start by 0 on the coordinate system
-            double height = xAxis - ((0.4*h)/maxHeight) * credit[i];
+//            int x = (int)(((((0.75*w)/credit.length) * i)) + yAxis);       // start by 0 on the coordinate system
+            int x = (int)(((((0.75*w)/credit.size()) * i)) + yAxis);
 
-            int barWidth = Math.max(2, w / (2 * credit.length));
+//            double height = xAxis - ((0.4*h)/maxHeight) * credit[i];       // determine height
+            double height = xAxis - ((0.4*h)/maxHeight) * credit.get(i);
+
+//            int barWidth =  Math.max(2, w / (2 * credit.length));
+            int barWidth =  Math.max(2, w / (2 * credit.size()));
             int barHeight = Math.abs(xAxis - (int) height);
             int barY = Math.min(xAxis, (int) height);
 
+            // check if its under or over the xAxis for coloring
             if(height < xAxis){
                 g.setColor(niceGreen);
-             // g.drawLine(x, xAxis, x, (int)height);
+                // g.drawLine(x, xAxis, x, (int)height);
                 g.fillRect(x, barY, barWidth, barHeight);
             }
             else {
@@ -71,12 +77,7 @@ public class GUICreditPanel extends JPanel {
             }
         }
         g.setColor(Color.BLACK);
-        g.drawString("Credit (final credit: " + String.format("%.2f", credit[credit.length - 1]) + ")", yAxis, h / 11);
-
-    }
-
-    private String toString(double credit) {
-        return null;
+        g.drawString("Credit (max credit: " + String.format("%.2f", maxHeight) + ")", yAxis, h / 11);
     }
 
     public GUICreditPanel(GUIApp app) {

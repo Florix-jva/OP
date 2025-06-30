@@ -4,7 +4,8 @@ package ai_bandit.lab3;
 import ai_bandit.lab2.MultiBandit;
 import ai_bandit.lab2.MultiBanditSolver;
 
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;;
 
 public class GUIApp {
 
@@ -16,8 +17,8 @@ public class GUIApp {
 
     double win;
     double initialCredit = 10;
-    private double[] overallProfit;
-
+//    private double[] overallProfit;
+    private final List<Double> overallProfit = new ArrayList<>();
 
 
     public void runRounds () {
@@ -29,8 +30,8 @@ public class GUIApp {
         System.out.printf("\n%5s | %6s | %10s | %10s\n", "Round", "Bandit", "Win [€]", "Net [€]");
 
         int numberOfRounds = gui.getNumberOfRounds();
-        if (overallProfit == null || overallProfit.length < numberOfRounds)
-            overallProfit = new double[numberOfRounds];
+//        if (overallProfit == null || overallProfit.length < numberOfRounds)
+//            overallProfit = new double[numberOfRounds];
 
         for (int i = 0; i < numberOfRounds; i++){
             int banditIndex;
@@ -47,7 +48,8 @@ public class GUIApp {
 
             System.out.printf("%5d | %6d | %10.2f | %10.2f\n", i + 1, banditIndex + 1, win, multiBandit.getOverallProfit());
 
-            overallProfit[i] = initialCredit + multiBandit.getOverallProfit();
+//            overallProfit[i] = initialCredit + multiBandit.getOverallProfit();
+            overallProfit.add(initialCredit + multiBandit.getOverallProfit());
         }
         gui.repaint();
         gui.revalidate();
@@ -60,7 +62,8 @@ public class GUIApp {
 
         this.multiBandit = new MultiBandit(numberBandits);
         this.multiBanditSolver = new MultiBanditSolver(multiBandit);
-        this.overallProfit = null;
+//        this.overallProfit = null;
+        overallProfit.clear();
 
         gui.repaint();
         gui.revalidate();
@@ -80,12 +83,14 @@ public class GUIApp {
         new GUIApp();
     }
 
-    public double[] getOverallProfit() {
+    // for flexible length -> adding the new profit to the overall credit
+    public List<Double> getOverallProfit() {
         return overallProfit;
     }
 
     public int getRoundsPlayed() {
-        return multiBandit.getRoundsPlayed();
+        return overallProfit.size();
+//        return multiBandit.getRoundsPlayed();
     }
 
     public MultiBanditSolver getMultiBanditSolver(){

@@ -21,7 +21,7 @@ public class GUI extends JPanel implements ActionListener {
     private final GUIBanditPanel guiBanditPanel;
     private final GUICreditPanel guiCreditPanel;
     private int numberOfRounds = 1;
-    private int strategy;
+    private int strategy = 15;          // epsilon greedy as standard
     private JLabel strategyLabel;
 
     public int getNumberOfRounds() {
