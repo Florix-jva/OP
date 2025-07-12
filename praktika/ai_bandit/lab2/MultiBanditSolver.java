@@ -1,7 +1,7 @@
 /*
  * Author: Florian Schnoor, Robert Petker
  * Project: 3. Lab in OP
- * Version: 23/06/2025
+ * Version: 30/06/2025
  */
 package ai_bandit.lab2;
 

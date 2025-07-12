@@ -1,6 +1,10 @@
+/*
+ * Author: Florian Schnoor, Robert Petker
+ * Project: 3. Lab in OP
+ * Version: 30/06/2025
+ */
 package ai_bandit.lab3;
 
-import ai_bandit.lab2.MultiBandit;
 import ai_bandit.lab2.MultiBanditSolver;
 
 import javax.swing.*;
@@ -10,6 +14,9 @@ import java.awt.event.ActionListener;
 
 public class GUI extends JPanel implements ActionListener {
     //buttons
+    JButton btnStart = new JButton("Start Autoplay");
+    JButton btnStop = new JButton("Stop Autoplay");
+
     JButton btnReset = new JButton("Reset bandits");
     JButton btn1x = new JButton("Play 1x");
     JButton btn10x = new JButton("Play 10x");
@@ -20,13 +27,20 @@ public class GUI extends JPanel implements ActionListener {
     private final GUIApp app;
     private final GUIBanditPanel guiBanditPanel;
     private final GUICreditPanel guiCreditPanel;
+    private final GUIThread thread;
     private int numberOfRounds = 1;
     private int strategy = 15;          // epsilon greedy as standard
-    private JLabel strategyLabel;
+    private final JLabel strategyLabel;
+    private boolean doWeAutoRun;
 
     public int getNumberOfRounds() {
         return numberOfRounds;
     }
+
+    public boolean isDoWeAutoRun() {
+        return doWeAutoRun;
+    }
+
 
     public int getStrategy() {
         return strategy;
@@ -37,6 +51,8 @@ public class GUI extends JPanel implements ActionListener {
         this.app = guiApp;
         this.guiBanditPanel = new GUIBanditPanel(app);
         this.guiCreditPanel = new GUICreditPanel(app);
+        this.thread = new GUIThread(app,this);
+
 
         // frame
         setSize(800,500);
@@ -65,6 +81,8 @@ public class GUI extends JPanel implements ActionListener {
         JPanel panelBtns = new JPanel();
         panelBtns.setLayout(new BoxLayout(panelBtns, BoxLayout.Y_AXIS));
         panelBtns.setPreferredSize(new Dimension(120, 400));
+        btnStart.setMaximumSize(new Dimension(120,30));
+        btnStop.setMaximumSize(new Dimension(120,30));
         btnReset.setMaximumSize(new Dimension(120,30));
         btn1x.setMaximumSize(new Dimension(120,30));
         btn10x.setMaximumSize(new Dimension(120,30));
@@ -73,6 +91,10 @@ public class GUI extends JPanel implements ActionListener {
         // event handling
         btnReset.setActionCommand("RESET");
         btnReset.addActionListener(this);
+        btnStart.setActionCommand("START");
+        btnStart.addActionListener(this);
+        btnStop.setActionCommand("STOP");
+        btnStop.addActionListener(this);
         btn1x.setActionCommand("1x");
         btn1x.addActionListener(this);
         btn10x.setActionCommand("10x");
@@ -80,6 +102,8 @@ public class GUI extends JPanel implements ActionListener {
         btn100x.setActionCommand("100x");
         btn100x.addActionListener(this);
 
+        panelBtns.add(btnStart);
+        panelBtns.add(btnStop);
         panelBtns.add(btnReset);
         panelBtns.add(btn1x);
         panelBtns.add(btn10x);
@@ -100,6 +124,8 @@ public class GUI extends JPanel implements ActionListener {
         contentPane.add(panelBtns, BorderLayout.WEST);
         contentPane.add(strategyLabel, BorderLayout.NORTH);
 
+//        thread.start();
+//        doWeAutoRun = true;
     }
     public GUIBanditPanel getBanditPanel() {
         return guiBanditPanel;
@@ -119,6 +145,18 @@ public class GUI extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()){
+            case "START":
+//                if (thread.isStarted()) {
+//                    doWeAutoRun = true;
+//                    break;
+//                }
+                thread.start();
+                doWeAutoRun = true;
+                break;
+            case "STOP":
+                doWeAutoRun = false;
+//                thread.interrupt();
+                break;
             case "RESET":
                 app.reset();
                 break;

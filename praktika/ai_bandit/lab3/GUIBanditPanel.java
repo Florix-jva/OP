@@ -1,3 +1,8 @@
+/*
+ * Author: Florian Schnoor, Robert Petker
+ * Project: 3. Lab in OP
+ * Version: 30/06/2025
+ */
 package ai_bandit.lab3;
 
 import ai_bandit.lab2.MultiBanditSolver;

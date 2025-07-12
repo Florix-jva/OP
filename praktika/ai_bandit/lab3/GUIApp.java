@@ -1,3 +1,8 @@
+/*
+ * Author: Florian Schnoor, Robert Petker
+ * Project: 3. Lab in OP
+ * Version: 30/06/2025
+ */
 package ai_bandit.lab3;
 
 
@@ -14,7 +19,6 @@ public class GUIApp {
     private final GUI gui;
     private GUIApp guiApp;
     private int numberBandits;
-
     double win;
     double initialCredit = 10;
 //    private double[] overallProfit;
@@ -77,10 +81,7 @@ public class GUIApp {
         this.multiBandit = new MultiBandit(numberBandits);
         this.multiBanditSolver = new MultiBanditSolver(multiBandit);
         this.gui = new GUI(multiBanditSolver, this);
-    }
 
-    public static void main(String[] args) {
-        new GUIApp();
     }
 
     // for flexible length -> adding the new profit to the overall credit
@@ -97,4 +98,8 @@ public class GUIApp {
         return multiBanditSolver;
     }
 
+    public static void main(String[] args) {
+        new GUIApp();
+
+    }
 }
